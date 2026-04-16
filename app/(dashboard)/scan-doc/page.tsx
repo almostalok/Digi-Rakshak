@@ -1,10 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { RiskBadge } from "@/components/RiskBadge";
 import { FileText, AlertTriangle, ShieldCheck, UploadCloud, Loader2, X, File } from "lucide-react";
-
 import { analyzeDocument } from "@/app/actions/scanner";
 
 export default function ScanDoc() {
@@ -30,11 +27,10 @@ export default function ScanDoc() {
     if (!file) return;
     setIsScanning(true);
     setResult(null);
-    
     try {
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const base64String = (reader.result as string).split(',')[1] || "";
+        const base64String = (reader.result as string).split(",")[1] || "";
         try {
           const data = await analyzeDocument(file.name, file.type, base64String);
           setResult(data);
@@ -46,7 +42,6 @@ export default function ScanDoc() {
       };
       reader.onerror = () => {
         setIsScanning(false);
-        console.error("Failed to read file");
       };
       reader.readAsDataURL(file);
     } catch (err) {
@@ -56,90 +51,88 @@ export default function ScanDoc() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div>
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-2xl mb-6">
-           <FileText className="w-8 h-8 text-purple-600" />
+    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 font-mono">
+      <div className="border-b-4 border-white pb-6">
+        <div className="w-16 h-16 flex items-center justify-center mb-6 bg-black border-4 border-white shadow-[4px_4px_0_0_#ffffff]">
+          <FileText className="w-8 h-8 text-white" strokeWidth={3} />
         </div>
-        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-          Document Analyzer
-        </h1>
-        <p className="text-slate-500 mt-3 text-lg leading-relaxed">Upload PDF, Word, or text files to detect hidden malware and malicious macros securely.</p>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-2">Document Analyser_</h1>
+        <p className="text-sm font-black uppercase tracking-widest text-black bg-white px-3 py-1 inline-block">Scan files for hidden malware and payloads.</p>
       </div>
 
-      <Card className="rounded-3xl border-slate-200 shadow-sm overflow-hidden border-t-4 border-t-purple-500">
-        <div className="bg-white p-8">
-          <CardTitle className="text-2xl font-bold text-slate-800 mb-2">Upload File</CardTitle>
-          <CardDescription className="text-base text-slate-500 mb-6">File remains secure and is discarded immediately after scan.</CardDescription>
-        
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            onChange={handleFileChange} 
-            className="hidden" 
-          />
+      {/* Upload Area */}
+      <div className="card-brutalist p-8 bg-black">
+        <span className="text-xs font-black uppercase tracking-widest text-black bg-white px-2 py-1 block mb-6 w-max border-2 border-black">File Upload</span>
+        <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
 
-          {!file ? (
-            <div 
-              onClick={() => fileInputRef.current?.click()}
-              className="border-3 border-dashed border-slate-300 rounded-3xl p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-slate-50 hover:border-purple-400 transition-all group bg-slate-50 min-h-[250px]"
-            >
-              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
-                <UploadCloud className="w-10 h-10 text-purple-500" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">Click to browse or drag file</h3>
-              <p className="text-slate-500 font-medium">Supports PDF, DOCX, XLSX, TXT (Max 10MB)</p>
+        {!file ? (
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="p-12 flex flex-col items-center justify-center text-center cursor-pointer group transition-all duration-300 border-4 border-dashed border-white hover:bg-white hover:text-black mb-6"
+          >
+            <div className="w-20 h-20 flex items-center justify-center mb-6 border-4 border-white group-hover:border-black bg-black group-hover:bg-white group-hover:shadow-[4px_4px_0_0_#000000] shadow-[4px_4px_0_0_#ffffff] transition-all">
+              <UploadCloud className="w-10 h-10 text-white group-hover:text-black" strokeWidth={3} />
             </div>
-          ) : (
-             <div className="border-2 border-purple-100 bg-purple-50 rounded-3xl p-8 flex items-center justify-between shadow-inner">
-               <div className="flex items-center">
-                 <div className="p-4 bg-white rounded-2xl shadow-sm mr-6">
-                    <File className="w-10 h-10 text-purple-600" />
-                 </div>
-                 <div>
-                   <h3 className="text-lg font-bold text-slate-800 mb-1">{file.name}</h3>
-                   <p className="text-slate-500 text-sm font-medium">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-                 </div>
-               </div>
-               <Button variant="ghost" size="icon" onClick={clearFile} className="hover:bg-purple-100 rounded-full h-12 w-12 text-slate-500 hover:text-purple-700">
-                 <X className="w-6 h-6" />
-               </Button>
-             </div>
-          )}
+            <h3 className="text-xl font-black uppercase tracking-widest">Click to browse</h3>
+            <p className="text-sm font-bold uppercase mt-2">PDF, DOCX, XLSX, TXT — Max 10MB</p>
+          </div>
+        ) : (
+          <div className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between border-4 border-white bg-black mb-6 gap-4">
+            <div className="flex items-center">
+              <div className="w-12 h-12 flex items-center justify-center mr-4 border-4 border-white bg-black">
+                <File className="w-6 h-6 text-white" strokeWidth={3} />
+              </div>
+              <div className="flex flex-col">
+                <h3 className="text-lg font-black text-white uppercase tracking-tighter truncate max-w-[200px] sm:max-w-xs">{file.name}</h3>
+                <p className="text-sm font-bold text-white uppercase mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+              </div>
+            </div>
+            <button onClick={clearFile}
+              className="w-12 h-12 flex items-center justify-center border-4 border-white bg-black text-white hover:bg-white hover:text-black transition-colors shrink-0">
+              <X className="w-6 h-6" strokeWidth={3} />
+            </button>
+          </div>
+        )}
 
-          <div className="mt-8 flex justify-end">
-            <Button 
-              size="lg" 
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-10 h-14 text-lg font-bold shadow-lg shadow-purple-200 transition-all"
-              onClick={handleScan}
-              disabled={isScanning || !file}
-            >
-              {isScanning ? <Loader2 className="mr-3 h-6 w-6 animate-spin" /> : <ShieldCheck className="mr-3 h-6 w-6" />}
-              {isScanning ? "Scanning File Zones..." : "Start Security Scan"}
-            </Button>
+        <div className="flex justify-end">
+          <button
+            className="inline-flex items-center px-8 py-4 text-sm font-black uppercase tracking-widest disabled:opacity-50 transition-all border-4 bg-white text-black border-white hover:translate-x-[-2px] hover:translate-y-[-2px] shadow-[4px_4px_0_0_#ffffff] hover:shadow-[6px_6px_0_0_#ffffff]"
+            onClick={handleScan}
+            disabled={isScanning || !file}
+          >
+            {isScanning ? <Loader2 className="mr-3 h-6 w-6 animate-spin" strokeWidth={3} /> : <ShieldCheck className="mr-3 h-6 w-6" strokeWidth={3} />}
+            {isScanning ? "Scanning..." : "Start Scan_"}
+          </button>
+        </div>
+      </div>
+
+      {/* Result */}
+      {result && (
+        <div className="card-brutalist overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-500"
+          style={{
+            borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+            boxShadow: `6px 6px 0 0 ${result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff"}`,
+          }}>
+          <div className="p-8">
+            <div className="flex flex-col mb-6">
+              <div className="flex items-center justify-between border-b-4 pb-4 mb-4" style={{
+                borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+              }}>
+                <span className="text-2xl font-black text-white uppercase tracking-tighter" style={{
+                  color: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+                }}>{result.title}</span>
+                <RiskBadge level={result.level} />
+              </div>
+            </div>
+            <div className="p-6 border-4 bg-black" style={{
+              borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+            }}>
+              <p className="text-sm font-bold text-white uppercase leading-relaxed">
+                {result.explanation}
+              </p>
+            </div>
           </div>
         </div>
-      </Card>
-
-      {result && (
-        <Card className={`rounded-3xl shadow-md border-0 overflow-hidden animate-in fade-in slide-in-from-bottom-8 
-          ${result.level === 'warning' ? 'bg-yellow-50' : result.level === 'danger' ? 'bg-red-50' : 'bg-green-50'}`}>
-          <div className={`h-2 ${result.level === 'warning' ? 'bg-yellow-500' : result.level === 'danger' ? 'bg-red-500' : 'bg-green-500'}`}></div>
-          <CardHeader className="pb-4 pt-6 px-8 flex flex-row items-center justify-between">
-            <CardTitle className="text-xl font-bold flex items-center text-slate-800">
-               Analysis Result
-            </CardTitle>
-            <RiskBadge level={result.level} className="text-sm px-4 py-1.5" />
-          </CardHeader>
-          <CardContent className="px-8 pb-8">
-            <div className={`p-6 rounded-2xl shadow-sm bg-white border ${result.level === 'warning' ? 'border-yellow-100' : result.level === 'danger' ? 'border-red-100' : 'border-green-100'}`}>
-               <h3 className={`text-2xl font-black mb-3 ${result.level === 'warning' ? 'text-yellow-700' : result.level === 'danger' ? 'text-red-700' : 'text-green-700'}`}>
-                 {result.title}
-               </h3>
-               <p className="text-lg text-slate-700 leading-relaxed font-medium">{result.explanation}</p>
-            </div>
-          </CardContent>
-        </Card>
       )}
     </div>
   );

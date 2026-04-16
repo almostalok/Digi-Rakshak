@@ -1,11 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { RiskBadge } from "@/components/RiskBadge";
 import { Link as LinkIcon, AlertTriangle, ShieldCheck, Globe, Loader2 } from "lucide-react";
-
 import { analyzeLink } from "@/app/actions/scanner";
 
 export default function ScanLink() {
@@ -17,7 +13,6 @@ export default function ScanLink() {
     if (!url.trim()) return;
     setIsScanning(true);
     setResult(null);
-    
     try {
       const data = await analyzeLink(url);
       setResult(data);
@@ -29,65 +24,67 @@ export default function ScanLink() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div>
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-6">
-           <LinkIcon className="w-8 h-8 text-blue-600" />
+    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 font-mono">
+      <div className="border-b-4 border-white pb-6">
+        <div className="w-16 h-16 flex items-center justify-center mb-6 bg-black border-4 border-white shadow-[4px_4px_0_0_#ffffff]">
+          <LinkIcon className="w-8 h-8 text-white" strokeWidth={3} />
         </div>
-        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-          Link Verifier
-        </h1>
-        <p className="text-slate-500 mt-3 text-lg leading-relaxed">Check URLs against global threat databases and perform deep resolution before you click.</p>
+        <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-2">Link Verifier_</h1>
+        <p className="text-sm font-black uppercase tracking-widest text-black bg-white px-3 py-1 inline-block">Check URLs against threat intelligence.</p>
       </div>
 
-      <Card className="rounded-3xl border-slate-200 shadow-sm overflow-hidden border-t-4 border-t-blue-500">
-        <div className="bg-white p-8">
-          <CardTitle className="text-2xl font-bold text-slate-800 mb-2">Target URL</CardTitle>
-          <CardDescription className="text-base text-slate-500 mb-6">Provide the full web address holding http:// or https://</CardDescription>
-        
-          <div className="flex flex-col sm:flex-row gap-4 mt-2">
-            <div className="relative flex-1">
-              <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-6 h-6" />
-              <Input 
-                placeholder="https://example.com/login" 
-                className="pl-14 text-lg font-medium h-16 bg-slate-50 rounded-2xl border-2 border-slate-200 focus:border-blue-500 focus:ring-blue-500 shadow-inner"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
+      {/* Input */}
+      <div className="card-brutalist p-8 bg-black">
+        <span className="text-xs font-black uppercase tracking-widest text-black bg-white px-2 py-1 block mb-6 w-max border-2 border-black">Target URL</span>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-white w-6 h-6" strokeWidth={3} />
+            <input
+              placeholder="https://example.com/login"
+              className="w-full text-lg text-white placeholder:text-gray-500 pl-14 pr-4 py-4 focus:outline-none focus:ring-0 transition-all font-mono border-4 border-white bg-black hover:bg-gray-900"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
+          <button
+            className="px-8 py-4 text-sm font-black uppercase tracking-widest disabled:opacity-50 sm:w-auto w-full transition-all border-4 bg-white text-black border-white hover:translate-x-[-2px] hover:translate-y-[-2px] shadow-[4px_4px_0_0_#ffffff] hover:shadow-[6px_6px_0_0_#ffffff]"
+            onClick={handleScan}
+            disabled={isScanning || !url.trim()}
+          >
+            {isScanning ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : "Verify_"}
+          </button>
+        </div>
+      </div>
+
+      {/* Result */}
+      {result && (
+        <div className="card-brutalist overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-500"
+          style={{
+            borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+            boxShadow: `6px 6px 0 0 ${result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff"}`,
+          }}>
+          <div className="p-8">
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 flex items-center justify-center shrink-0 border-4 bg-black" style={{
+                borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+                color: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+              }}>
+                {result.level === "safe" ? <ShieldCheck className="w-8 h-8" strokeWidth={3} /> : <AlertTriangle className="w-8 h-8" strokeWidth={3} />}
+              </div>
+              <div className="flex-1">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+                  <span className="text-2xl font-black text-white uppercase tracking-tighter" style={{
+                    color: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+                  }}>{result.title}</span>
+                  <RiskBadge level={result.level} />
+                </div>
+                <p className="text-sm font-bold text-white uppercase leading-relaxed border-l-4 pl-4" style={{
+                  borderColor: result.level === "danger" ? "#ff0000" : result.level === "warning" ? "#aaaaaa" : "#ffffff",
+                }}>{result.explanation}</p>
+              </div>
             </div>
-            <Button 
-              size="lg" 
-              className="h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl px-10 text-lg font-bold shadow-lg shadow-blue-200 transition-all w-full sm:w-auto"
-              onClick={handleScan}
-              disabled={isScanning || !url.trim()}
-            >
-              {isScanning ? <Loader2 className="w-6 h-6 animate-spin" /> : "Verify Link"}
-            </Button>
           </div>
         </div>
-      </Card>
-
-      {result && (
-        <Card className={`rounded-3xl shadow-md border-0 overflow-hidden animate-in fade-in slide-in-from-bottom-8 
-          ${result.level === 'warning' ? 'bg-yellow-50' : result.level === 'danger' ? 'bg-red-50' : 'bg-green-50'}`}>
-          <div className={`h-2 ${result.level === 'warning' ? 'bg-yellow-500' : result.level === 'danger' ? 'bg-red-500' : 'bg-green-500'}`}></div>
-          <CardHeader className="pb-4 pt-6 px-8">
-            <RiskBadge level={result.level} className="w-max text-sm px-4 py-1.5" />
-          </CardHeader>
-          <CardContent className="px-8 pb-8">
-            <div className="flex flex-col md:flex-row items-start">
-              <div className={`p-4 rounded-2xl mr-6 mb-4 md:mb-0
-                ${result.level === 'warning' ? 'bg-yellow-100 text-yellow-600' : result.level === 'danger' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
-                {result.level === "safe" ? <ShieldCheck className="w-10 h-10" /> : <AlertTriangle className="w-10 h-10" />}
-              </div>
-              <div className={`p-6 rounded-2xl shadow-sm flex-1 bg-white
-                ${result.level === 'warning' ? 'text-yellow-900 border border-yellow-100' : result.level === 'danger' ? 'text-red-900 border border-red-100' : 'text-green-900 border border-green-100'}`}>
-                <h3 className="text-2xl font-black mb-2">{result.title}</h3>
-                <p className="text-lg leading-relaxed opacity-90 font-medium">{result.explanation}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       )}
     </div>
   );

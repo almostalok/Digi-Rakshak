@@ -1,68 +1,83 @@
 import Link from "next/link";
-import { Shield, ArrowRight, ShieldCheck, Zap, Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Shield, ArrowRight, ShieldCheck, Zap, Lock, Scan, ChevronRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+    <div className="min-h-screen mesh-bg flex flex-col font-sans relative overflow-hidden">
+      {/* Ambient glow orbs */}
+      <div className="absolute top-[-200px] left-[-100px] w-[500px] h-[500px] rounded-full opacity-30 pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%)" }} />
+      <div className="absolute bottom-[-200px] right-[-100px] w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
+        style={{ background: "radial-gradient(circle, rgba(108,92,231,0.08) 0%, transparent 70%)" }} />
+
       {/* Header */}
-      <header className="px-8 h-20 flex items-center justify-between bg-white border-b border-slate-200">
+      <header className="relative z-10 px-6 md:px-10 h-[72px] flex items-center justify-between border-b border-white/[0.04]">
         <div className="flex items-center">
-          <Shield className="w-8 h-8 text-indigo-600 mr-3" />
-          <span className="font-bold text-slate-900 text-xl tracking-tight">DigiRakshak</span>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center mr-3"
+            style={{ background: "linear-gradient(135deg, #00d4aa, #00b894)", boxShadow: "0 0 20px rgba(0,212,170,0.3)" }}>
+            <Shield className="w-5 h-5 text-[#08090d]" />
+          </div>
+          <span className="font-bold text-white/90 text-[16px] tracking-tight">DigiRakshak</span>
         </div>
         <Link href="/dashboard">
-          <Button className="rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-6">
-            Go to Dashboard <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
+          <span className="inline-flex items-center px-5 py-2.5 rounded-full text-[13px] font-semibold text-[#08090d] transition-all hover:scale-[1.02]"
+            style={{ background: "linear-gradient(135deg, #00d4aa, #00b894)", boxShadow: "0 0 25px rgba(0,212,170,0.2)" }}>
+            Dashboard <ArrowRight className="ml-2 w-4 h-4" />
+          </span>
         </Link>
       </header>
 
-      {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-20 text-center">
+      {/* Hero */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-24 text-center">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 font-medium mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-indigo-600 mr-2"></span>
-            Version 1.0 is now live
+          {/* Status pill */}
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.15em] mb-8"
+            style={{
+              background: "rgba(0,212,170,0.08)",
+              border: "1px solid rgba(0,212,170,0.15)",
+              color: "#00d4aa",
+            }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00d4aa] mr-2 animate-pulse-glow" />
+            System Active
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-8">
-            Your Digital Safety <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400">Guardian</span>
+
+          <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-black text-white leading-[1.05] tracking-tight mb-6">
+            Your Digital
+            <br />
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #00d4aa, #6c5ce7)" }}>
+              Safety Guardian
+            </span>
           </h1>
-          <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-            Protect yourself from online threats, phishing links, and malicious documents with our advanced scanning and analysis engine.
+          <p className="text-[17px] text-white/40 mb-12 max-w-xl mx-auto leading-relaxed font-normal">
+            Advanced threat detection for SMS, links, and documents. Powered by AI with local fallback analysis.
           </p>
-          <div className="flex justify-center gap-4">
-            <Link href="/dashboard">
-              <Button size="lg" className="rounded-full h-14 px-8 text-lg bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition-all">
-                Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-          </div>
+          <Link href="/dashboard">
+            <span className="inline-flex items-center px-8 py-4 rounded-2xl text-[15px] font-bold text-[#08090d] transition-all hover:scale-[1.02] hover:shadow-lg"
+              style={{
+                background: "linear-gradient(135deg, #00d4aa, #00b894)",
+                boxShadow: "0 10px 40px rgba(0,212,170,0.25), 0 0 0 1px rgba(0,212,170,0.3)",
+              }}>
+              Enter Dashboard <ChevronRight className="ml-2 w-5 h-5" />
+            </span>
+          </Link>
         </div>
 
-        {/* Features Section */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mt-24">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 text-left">
-            <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
-              <ShieldCheck className="w-7 h-7 text-indigo-600" />
+        {/* Features */}
+        <div className="grid md:grid-cols-3 gap-5 max-w-4xl mt-20 w-full">
+          {[
+            { icon: ShieldCheck, title: "Real-time Scanning", desc: "Instant analysis of threats in SMS messages, URLs, and uploaded documents.", color: "#00d4aa" },
+            { icon: Zap, title: "Dual Engine", desc: "AI-powered analysis with automatic local fallback when offline or rate-limited.", color: "#6c5ce7" },
+            { icon: Lock, title: "Privacy First", desc: "Zero data retention. Files are analyzed in-memory and immediately discarded.", color: "#ff6b81" },
+          ].map((f, i) => (
+            <div key={i} className="card-3d rounded-2xl p-6 text-left group hover:translate-y-[-3px] transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                style={{ background: `${f.color}12`, color: f.color }}>
+                <f.icon className="w-5 h-5" />
+              </div>
+              <h3 className="text-[15px] font-bold text-white/85 mb-2">{f.title}</h3>
+              <p className="text-[13px] text-white/35 leading-relaxed">{f.desc}</p>
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Real-time Protection</h3>
-            <p className="text-slate-600 leading-relaxed">Instantly analyze suspicious SMS, links, and documents to detect potential threats before they harm you.</p>
-          </div>
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 text-left">
-            <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
-              <Zap className="w-7 h-7 text-indigo-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Fast & Accurate</h3>
-            <p className="text-slate-600 leading-relaxed">Powered by advanced algorithms to provide immediate, reliable risk assessments for all your digital inputs.</p>
-          </div>
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 text-left">
-            <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
-              <Lock className="w-7 h-7 text-indigo-600" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Privacy First</h3>
-            <p className="text-slate-600 leading-relaxed">Your data remains private. We analyze content securely without storing sensitive personal information.</p>
-          </div>
+          ))}
         </div>
       </main>
     </div>
