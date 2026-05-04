@@ -23,8 +23,40 @@
 <img src="https://img.shields.io/github/last-commit/almostalok/Digi-Rakshak?style=flat-square&color=a78bfa" />
 &nbsp;
 <img src="https://img.shields.io/github/languages/top/almostalok/Digi-Rakshak?style=flat-square&color=06b6d4" />
+&nbsp;
+<img src="https://img.shields.io/badge/license-MIT-green?style=flat-square&color=a78bfa" />
 
 </div>
+
+---
+
+## 📋 Table of Contents
+
+- [The Problem](#-the-problem)
+- [What is DigiRakshak?](#️-what-is-digirakshak)
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [How the AI Engine Works](#-how-the-ai-engine-works)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#️-getting-started)
+- [Available Scripts](#️-available-scripts)
+- [Privacy & Security](#-privacy--security)
+- [Roadmap](#️-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🚨 The Problem
+
+Every day, millions of people fall victim to digital scams:
+
+- **3.4 billion** phishing emails are sent every single day
+- SMS-based fraud ("smishing") has surged **328%** in recent years
+- Most victims have **no easy tool** to verify a suspicious message before it's too late
+
+DigiRakshak exists to close that gap — a free, instant, privacy-first scanner anyone can use.
 
 ---
 
@@ -34,7 +66,7 @@
 <tr>
 <td width="65%">
 
-**DigiRakshak** (Hindi: *Digital Protector*) is a **privacy-first cybersecurity web application** that helps everyday users identify digital threats.
+**DigiRakshak** (Hindi: *Digital Protector*) is a **privacy-first cybersecurity web application** that helps everyday users identify digital threats — before they become victims.
 
 It scans **SMS messages**, **suspicious URLs**, and **uploaded documents** for phishing, malware, and fraud — using **Google Gemini AI** with an automatic offline fallback when the API is unavailable.
 
@@ -87,7 +119,7 @@ Analyze URLs for malicious domains, suspicious params & unsafe routing
 ### 📄
 **Document Scanner**
 <br/>
-Upload PDFs, images, text files for deep forensic content analysis
+Upload PDFs, images, and text files for deep forensic content analysis
 
 </td>
 <td align="center" width="25%">
@@ -113,7 +145,7 @@ Centralized log of all flagged threats across every scan type
 ### ⚡
 **Dual Engine**
 <br/>
-Gemini 2.0 Flash as primary · rule-based analyzer as fallback
+Gemini 2.0 Flash as primary · rule-based analyzer as offline fallback
 
 </td>
 <td align="center" width="25%">
@@ -135,6 +167,38 @@ Local fallback engine keeps you protected even without an API key
 </tr>
 </table>
 
+</div>
+
+---
+
+## 📸 Screenshots
+
+> **Dashboard — Risk Overview**
+
+<div align="center">
+<em>A real-time overview of your scan history, risk distribution, and latest alerts.</em>
+</div>
+
+<br/>
+
+> **SMS Scanner — Live Analysis**
+
+<div align="center">
+<em>Paste any suspicious message and get an instant AI-powered verdict with highlighted red-flag phrases.</em>
+</div>
+
+<br/>
+
+> **Link Scanner — URL Inspection**
+
+<div align="center">
+<em>Submit a URL and receive a structured threat report covering domain reputation, redirects, and suspicious patterns.</em>
+</div>
+
+<br/>
+
+<div align="center">
+<em>💡 Clone the repo, run it locally, and explore the full UI at <code>http://localhost:3000</code>.</em>
 </div>
 
 ---
@@ -169,7 +233,7 @@ Local fallback engine keeps you protected even without an API key
 
 </div>
 
-Each scan returns a **structured JSON result**:
+Each scan returns a **structured JSON result** with an actionable breakdown:
 
 ```json
 {
@@ -179,6 +243,8 @@ Each scan returns a **structured JSON result**:
   "highlighted": ["urgent", "click here", "verify now"]
 }
 ```
+
+The **dual-engine design** means DigiRakshak never goes down — if the cloud AI is unavailable, the local rule-based engine activates automatically with zero configuration required.
 
 ---
 
@@ -190,10 +256,10 @@ Each scan returns a **structured JSON result**:
 |:---:|:---|
 | 🖥️ **Framework** | [Next.js 16](https://nextjs.org) — App Router, Server Actions |
 | ⚛️ **UI** | [React 19](https://react.dev) · [shadcn/ui](https://ui.shadcn.com) · [Lucide Icons](https://lucide.dev) |
-| 🎨 **Styling** | [Tailwind CSS v4](https://tailwindcss.com) — brutalist design system |
+| 🎨 **Styling** | [Tailwind CSS v4](https://tailwindcss.com) |
 | 📈 **Charts** | [Recharts](https://recharts.org) |
-| 🤖 **AI Engine** | [Google Gemini 2.0 Flash](https://ai.google.dev) |
-| 🔤 **Language** | [TypeScript 5](https://www.typescriptlang.org) |
+| 🤖 **AI Engine** | [Google Gemini 2.0 Flash](https://ai.google.dev) via `@google/generative-ai` |
+| 🔤 **Language** | [TypeScript 5](https://www.typescriptlang.org) — strict, end-to-end typed |
 
 </div>
 
@@ -238,51 +304,38 @@ digi-rakshak/
 
 > **Prerequisites:** Node.js ≥ 18 · A free [Google Gemini API key](https://ai.google.dev)
 
-<table>
-<tr>
-<td>
-
-**① Clone**
+**① Clone the repository**
 
 ```bash
 git clone https://github.com/almostalok/Digi-Rakshak.git
 cd Digi-Rakshak
 ```
 
-</td>
-<td>
-
-**② Install**
+**② Install dependencies**
 
 ```bash
 npm install
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+**③ Configure environment variables**
 
-**③ Configure**
+```bash
+cp .env.example .env.local   # or create .env.local manually
+```
 
 ```env
 # .env.local
 GOOGLE_API=your_gemini_api_key_here
 ```
 
-</td>
-<td>
+Get a free API key at [aistudio.google.com](https://aistudio.google.com/app/apikey) — it takes less than a minute.
 
-**④ Run**
+**④ Start the development server**
 
 ```bash
 npm run dev
-# → http://localhost:3000
+# → Open http://localhost:3000
 ```
-
-</td>
-</tr>
-</table>
 
 > 💡 **No API key?** DigiRakshak automatically falls back to its built-in local analyzer — no crash, no downtime.
 
@@ -294,10 +347,10 @@ npm run dev
 
 | Command | Action |
 |:---|:---|
-| `npm run dev` | 🔥 Start development server |
-| `npm run build` | 📦 Build for production |
-| `npm run start` | 🚀 Start production server |
-| `npm run lint` | 🔍 Run ESLint |
+| `npm run dev` | 🔥 Start the development server with hot reload |
+| `npm run build` | 📦 Build an optimized production bundle |
+| `npm run start` | 🚀 Serve the production build locally |
+| `npm run lint` | 🔍 Lint the codebase with ESLint |
 
 </div>
 
@@ -305,42 +358,63 @@ npm run dev
 
 ## 🔐 Privacy & Security
 
+DigiRakshak is designed with privacy as a hard requirement, not an afterthought:
+
 <div align="center">
 
-```
-┌─────────────────────────────────────────────────────┐
-│  ✅  No data is ever stored or logged               │
-│  ✅  No user accounts required                      │
-│  ✅  All scans are stateless and in-memory          │
-│  ✅  Works offline with local fallback engine       │
-│  ✅  Open source — audit the code yourself          │
-└─────────────────────────────────────────────────────┘
-```
+| Principle | Implementation |
+|:---|:---|
+| ✅ **No data storage** | Scan results are never written to disk or a database |
+| ✅ **No user accounts** | Zero sign-up friction — open the app and go |
+| ✅ **Stateless processing** | Each request is isolated; nothing persists between scans |
+| ✅ **Offline capable** | Local rule engine runs entirely in-process, no external calls |
+| ✅ **Open source** | Every line of code is auditable — no hidden data pipelines |
 
 </div>
 
 ---
 
+## 🗺️ Roadmap
+
+Planned improvements and features:
+
+- [ ] **Browser Extension** — scan links inline as you browse
+- [ ] **Email Scanner** — detect phishing in forwarded email text
+- [ ] **QR Code Scanner** — decode and analyze QR codes before visiting them
+- [ ] **Threat Database** — community-reported malicious URLs and phone numbers
+- [ ] **Multi-language Support** — detection for SMS fraud in regional Indian languages
+- [ ] **API Endpoint** — public REST API for developers to integrate DigiRakshak into their own apps
+
+> Have a feature idea? [Open an issue](https://github.com/almostalok/Digi-Rakshak/issues/new) and let's discuss it!
+
+---
+
 ## 🤝 Contributing
 
-Contributions are welcome! 🎉
+Contributions, bug reports, and feature requests are all welcome! 🎉
 
-```bash
-# 1 · Fork the repo & create your branch
-git checkout -b feature/my-feature
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature-name`
+3. **Commit** your changes following [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m "feat: add your feature"`
+4. **Push** to your fork: `git push origin feature/your-feature-name`
+5. **Open a Pull Request** — describe what you changed and why
 
-# 2 · Make your changes and commit
-git commit -m "feat: add my feature"
-
-# 3 · Push & open a Pull Request
-git push origin feature/my-feature
-```
+**Found a bug?** Please [open an issue](https://github.com/almostalok/Digi-Rakshak/issues/new) with steps to reproduce.
 
 ---
 
 ## 📄 License
 
-This project is open source. See the repository for license details.
+This project is licensed under the **MIT License** — you are free to use, modify, and distribute it. See [`LICENSE`](./LICENSE) for full terms.
+
+---
+
+## 🙏 Acknowledgments
+
+- [Google Gemini](https://ai.google.dev) — for making powerful AI accessible to developers
+- [Vercel / Next.js team](https://nextjs.org) — for the outstanding App Router DX
+- [shadcn](https://ui.shadcn.com) — for beautifully composable UI components
+- [capsule-render](https://github.com/kyechan99/capsule-render) — for the stunning README banner
 
 ---
 
